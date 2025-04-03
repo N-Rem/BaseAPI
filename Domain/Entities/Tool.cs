@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,5 +17,7 @@ namespace Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int UserTool { get; set; }
+
+        public Status Status { get; set; } = Status.Active;
     }
 }
