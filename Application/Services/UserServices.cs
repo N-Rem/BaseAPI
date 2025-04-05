@@ -75,21 +75,21 @@ namespace Application.Services
                 throw new Exception("An unexpected error occurred", ex);
             }
         }
-        public async Task<UserDTO> CreateOwnerAsync(UserCreateRequestDTO request)
+        public async Task<UserDTO> CreateClientAsync(UserCreateRequestDTO request)
         {
             try
             {
                 await MailExistsAsync(request.Email);
 
-                var newOwner = new User();
-                newOwner.Name = request.Name;
-                newOwner.Email = request.Email;
-                newOwner.Type = Domain.Enums.UserType.Owner;
-                newOwner.Status = Domain.Enums.Status.Active;
-                newOwner.Password = request.Password;
+                var newClient = new User();
+                newClient.Name = request.Name;
+                newClient.Email = request.Email;
+                newClient.Type = Domain.Enums.UserType.Client;
+                newClient.Status = Domain.Enums.Status.Active;
+                newClient.Password = request.Password;
 
-                var owner = await _userRepository.AddAsync(newOwner);
-                return UserDTO.Create(owner);
+                var client = await _userRepository.AddAsync(newClient);
+                return UserDTO.Create(client);
             }
             catch (NotFoundException ex)
             {
@@ -167,8 +167,6 @@ namespace Application.Services
                 throw new Exception("An unexpected error occurred", ex);
             }
         }
-
-
 
 
 
