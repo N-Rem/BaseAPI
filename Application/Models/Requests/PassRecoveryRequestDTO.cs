@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Application.Models.Requests
 {
-    public enum UserType
+    public class PassRecoveryRequestDTO
     {
-        Admin,
-        Owner,
-        Employee,
+
+        public string Email { get; set; }
     }
 }
