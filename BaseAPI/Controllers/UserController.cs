@@ -55,11 +55,11 @@ namespace BaseAPI.Controllers
         }
 
         [HttpPost("[Action]")]
-        public async Task<IActionResult> CreateOwner([FromBody] UserCreateRequestDTO request)
+        public async Task<IActionResult> CreateClient([FromBody] UserCreateRequestDTO request)
         {
             try
             {
-                var newUserDTO = await _userServices.CreateOwnerAsync(request);
+                var newUserDTO = await _userServices.CreateClientAsync(request);
                 return Ok(newUserDTO);
             }
             catch (NotFoundException ex)
