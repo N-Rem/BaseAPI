@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -31,15 +33,20 @@ builder.Services.AddDbContext<AppDbContext>(opcion =>
 #endregion
 
 #region Respositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IToolRepository, ToolRepository>();
+builder.Services.AddScoped<IUserProjectRepository, UserProjectRepository>();
 
 
 #endregion
 
 #region Services
-
-
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IProjectServices, ProjectServices>();
+builder.Services.AddScoped<IUserProjectServices, UserProjectServices>();
+builder.Services.AddScoped<IToolServices, ToolServices>();
 
 #endregion
 
