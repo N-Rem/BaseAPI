@@ -55,11 +55,11 @@ namespace BaseAPI.Controllers
         }
 
         [HttpPost("[Action]")]
-        public async Task<IActionResult> CreateClient([FromBody] UserCreateRequestDTO request)
+        public async Task<IActionResult> Create([FromBody] UserCreateRequestDTO request)
         {
             try
             {
-                var newUserDTO = await _userServices.CreateClientAsync(request);
+                var newUserDTO = await _userServices.CreateUserAsync(request);
                 return Ok(newUserDTO);
             }
             catch (NotFoundException ex)
@@ -71,41 +71,7 @@ namespace BaseAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpPost("[Action]")]
-        public async Task<IActionResult> CreateEmployee([FromBody] UserCreateRequestDTO request)
-        {
-            try
-            {
-                var newUserDTO = await _userServices.CreateEmployeeAsync(request);
-                return Ok(newUserDTO);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-        [HttpPost("[Action]")]
-        public async Task<IActionResult> CreateAdmin([FromBody] UserCreateRequestDTO request)
-        {
-            try
-            {
-                var newUserDTO = await _userServices.CreateAdminAsync(request);
-                return Ok(newUserDTO);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
+        
         [HttpPut("[Action]/{id}")]
         public async Task<IActionResult> Update([FromBody] UserUpdateRequestDTO reques, [FromRoute] int id)
         {
@@ -142,6 +108,59 @@ namespace BaseAPI.Controllers
         }
 
 
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> RequestPassChange([FromBody] PassRecoveryRequestDTO request)
+        {
+            try
+            {
+                await _userServices.RequestPassChangeAsync(request);
+                return Ok("Password recovery email sent.");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdatePass([FromBody] PassResetRequestDTO request)
+        {
+            try
+            {
+                await _userServices.UpdatePassAsync(request);
+                return Ok("Password updated successfully.");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> LogicalDelete([FromRoute] int id)
+        {
+            try
+            {
+                await _userServices.LogicalDeleteAsync(id);
+                return Ok("User logically deleted.");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
 
     }

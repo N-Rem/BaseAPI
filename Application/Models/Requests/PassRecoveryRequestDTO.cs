@@ -8,7 +8,6 @@ namespace Application.Models.Requests
 {
     public class PassRecoveryRequestDTO
     {
-
         public string Email { get; set; }
     }
 }
