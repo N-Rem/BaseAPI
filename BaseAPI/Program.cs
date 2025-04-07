@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services.AuthenticationServices;
+using Infrastructure.Services.EmailServises;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
@@ -93,10 +94,14 @@ builder.Services.AddScoped<IProjectServices, ProjectServices>();
 builder.Services.AddScoped<IUserProjectServices, UserProjectServices>();
 builder.Services.AddScoped<IToolServices, ToolServices>();
 
-
+//JWT
 builder.Services.Configure<AuthenticationServiceOptions>(
     builder.Configuration.GetSection(AuthenticationServiceOptions.AuthenticationService));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationServices>();
+//Envio de emails
+builder.Services.Configure<EmailSettingsOptions>(
+    builder.Configuration.GetSection(EmailSettingsOptions.EmailService));
+builder.Services.AddScoped<IEmailServices, EmailServices>();
 #endregion
 
 
