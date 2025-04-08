@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
@@ -64,9 +65,9 @@ namespace Infrastructure.Services.EmailServises
                 smtp.Send(email);
                 smtp.Disconnect(true);
             }
-            catch (InvalidProgramException ex)
+            catch (NoMailSentException ex)
             {
-                throw new InvalidProgramException("Could not Send Confirmation email", ex);
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
             }
         }
 

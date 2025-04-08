@@ -66,6 +66,10 @@ namespace BaseAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -83,6 +87,10 @@ namespace BaseAPI.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
             }
             catch (Exception ex)
             {
@@ -121,6 +129,10 @@ namespace BaseAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -137,6 +149,18 @@ namespace BaseAPI.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (RestoreCodeTimeException ex)
+            {
+                throw new RestoreCodeTimeException("The code has expired.", ex);
+            }
+            catch (RestoreCodeValidationException ex)
+            {
+                throw new RestoreCodeValidationException("Invalid recovery code.", ex);
+            }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
             }
             catch (Exception ex)
             {

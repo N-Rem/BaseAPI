@@ -85,6 +85,10 @@ namespace Application.Services
             {
                 throw new NotValidFormatExeption("Format not Valid", ex);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurreddd", ex);
@@ -142,6 +146,10 @@ namespace Application.Services
             {
                 throw new NotFoundException("User Not Found", ex);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred", ex);
@@ -154,10 +162,10 @@ namespace Application.Services
             {
                 if (!PasswordValidator(request.NewPassword))  throw new NotValidFormatExeption("Invalid Password format.");
 
-                await EnsureEmailNotExistsAsync(request.email);
                 var user = await _userRepository.GetByEmailAsync(request.email);
-                if (!ValidateExpiryTime(user)) throw new Exception("The code has expired.");
-                if (!PassResetValidator(user, request.Code))  throw new Exception("Invalid recovery code.");
+
+                if (!ValidateExpiryTime(user)) throw new RestoreCodeTimeException("The code has expired.");
+                if (!PassResetValidator(user, request.Code))  throw new RestoreCodeValidationException("Invalid recovery code.");
                 
                 user.Password = request.NewPassword;
                 await _userRepository.UpdateAsync(user);
@@ -170,6 +178,18 @@ namespace Application.Services
             catch (NotValidFormatExeption ex)
             {
                 throw new NotValidFormatExeption("Format not Valid", ex);
+            }
+            catch (RestoreCodeTimeException ex)
+            {
+                throw new RestoreCodeTimeException("The code has expired.", ex);
+            }
+            catch (RestoreCodeValidationException ex)
+            {
+                throw new RestoreCodeValidationException("Invalid recovery code.", ex);
+            }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
             }
             catch (Exception ex)
             {
@@ -334,7 +354,5 @@ namespace Application.Services
             _emailServices.SendMail(headerMsj, msj, emailUser);
         }
         #endregion
-
-
     }
 }
