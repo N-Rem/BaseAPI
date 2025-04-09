@@ -15,6 +15,7 @@ namespace Application.Interfaces
         Task<ToolDTO> CreateAsync(ToolCreateRequestDTO request);
         Task UpdateAsync(ToolUpdateRequestDTO request, int id);
         Task DeleteAsync(int id);
+        Task LogicalDeleteAsync(int id);
 
     }
 }

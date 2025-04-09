@@ -2,6 +2,7 @@
 using Application.Models.Requests;
 using Application.Services;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace BaseAPI.Controllers
 
 
         [HttpGet("[Action]")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -38,6 +40,7 @@ namespace BaseAPI.Controllers
         }
 
         [HttpGet("[Action]/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             try
@@ -56,6 +59,7 @@ namespace BaseAPI.Controllers
         }
 
         [HttpPost("[Action]")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Create([FromBody] ToolCreateRequestDTO request)
         {
             try
@@ -74,6 +78,7 @@ namespace BaseAPI.Controllers
         }
 
         [HttpPut("[Action]/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> Update([FromBody] ToolUpdateRequestDTO reques, [FromRoute] int id)
         {
             try
@@ -92,12 +97,32 @@ namespace BaseAPI.Controllers
         }
 
         [HttpDelete("[Action]/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
                 await _toolServices.DeleteAsync(id);
                 return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> LogicalDelete([FromRoute] int id)
+        {
+            try
+            {
+                await _toolServices.LogicalDeleteAsync(id);
+                return Ok("Tool logically deleted.");
             }
             catch (NotFoundException ex)
             {

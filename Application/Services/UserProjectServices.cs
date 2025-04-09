@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Domain.Enums;
 
 namespace Application.Services
 {
@@ -108,7 +109,25 @@ namespace Application.Services
             }
         }
 
-         
+
+        public async Task LogicalDeleteAsync(int id)
+        {
+            try
+            {
+                var obj = await FoundUserProjectIdAsync(id);
+                obj.Status = Status.Inactive;
+
+                await _userProjectRepository.UpdateAsync(obj);
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("UserProject Not Found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred", ex);
+            }
+        }
         private async Task<UserProject> FoundUserProjectIdAsync(int id)
         {
             var userProject = await _userProjectRepository.GetByIdAsync(id)

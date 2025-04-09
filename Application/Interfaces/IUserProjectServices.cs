@@ -15,6 +15,7 @@ namespace Application.Interfaces
         Task<UserProjectDTO> CreateAsync(UserProjectCreateRequestDTO request);
         Task UpdateAsync(UserProjectUpdateRequestDTO request, int id);
         Task DeleteAsync(int id);
+        Task LogicalDeleteAsync(int id);
 
     }
 }
