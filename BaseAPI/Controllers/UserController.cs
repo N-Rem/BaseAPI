@@ -2,6 +2,7 @@
 using Application.Models.Requests;
 using Application.Services;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace BaseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userServices;
@@ -19,6 +21,7 @@ namespace BaseAPI.Controllers
 
 
         [HttpGet("[Action]")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -37,6 +40,7 @@ namespace BaseAPI.Controllers
         }
 
         [HttpGet("[Action]/{id}")]
+        [Authorize(Policy = "ClientEmployeeAdmin")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             try
@@ -55,6 +59,7 @@ namespace BaseAPI.Controllers
         }
 
         [HttpPost("[Action]")]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] UserCreateRequestDTO request)
         {
             try
@@ -66,6 +71,10 @@ namespace BaseAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -73,6 +82,7 @@ namespace BaseAPI.Controllers
         }
         
         [HttpPut("[Action]/{id}")]
+        [Authorize(Policy = "ClientEmployeeAdmin")]
         public async Task<IActionResult> Update([FromBody] UserUpdateRequestDTO reques, [FromRoute] int id)
         {
             try
@@ -84,12 +94,18 @@ namespace BaseAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        
         [HttpDelete("[Action]/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
@@ -106,45 +122,9 @@ namespace BaseAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
-
-
-        [HttpPut("[action]")]
-        public async Task<IActionResult> RequestPassChange([FromBody] PassRecoveryRequestDTO request)
-        {
-            try
-            {
-                await _userServices.RequestPassChangeAsync(request);
-                return Ok("Password recovery email sent.");
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-        [HttpPut("[action]")]
-        public async Task<IActionResult> UpdatePass([FromBody] PassResetRequestDTO request)
-        {
-            try
-            {
-                await _userServices.UpdatePassAsync(request);
-                return Ok("Password updated successfully.");
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
+        
         [HttpPut("[action]/{id}")]
+        [Authorize(Policy = "ClientEmployeeAdmin")]
         public async Task<IActionResult> LogicalDelete([FromRoute] int id)
         {
             try
@@ -163,5 +143,62 @@ namespace BaseAPI.Controllers
         }
 
 
+
+
+        [HttpPut("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RequestPassChange([FromBody] PassRecoveryRequestDTO request)
+        {
+            try
+            {
+                await _userServices.RequestPassChangeAsync(request);
+                return Ok("Password recovery email sent.");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdatePass([FromBody] PassResetRequestDTO request)
+        {
+            try
+            {
+                await _userServices.UpdatePassAsync(request);
+                return Ok("Password updated successfully.");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (RestoreCodeTimeException ex)
+            {
+                throw new RestoreCodeTimeException("The code has expired.", ex);
+            }
+            catch (RestoreCodeValidationException ex)
+            {
+                throw new RestoreCodeValidationException("Invalid recovery code.", ex);
+            }
+            catch (NoMailSentException ex)
+            {
+                throw new NoMailSentException("Could not Send Confirmation email", ex);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        
     }
 }

@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
@@ -104,6 +105,27 @@ namespace Application.Services
                 throw new Exception("An unexpected error occurred", ex);
             }
         }
+
+
+        public async Task LogicalDeleteAsync(int id)
+        {
+            try
+            {
+                var obj = await FoundProjectIdAsync(id);
+                obj.Status = Status.Inactive;
+
+                await _projectRepository.UpdateAsync(obj);
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("Project Not Found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred", ex);
+            }
+        }
+
 
 
 

@@ -64,6 +64,16 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+
+//Define políticas de autorización para usar en los controladores
+//para restringir el acceso según el rol del usuario autenticado.
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ClientEmployeeAdmin", policy =>
+        policy.RequireRole("Client", "Employee", "Admin"));
+});
+
 #endregion
 
 #region MySql
