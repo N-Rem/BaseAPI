@@ -46,6 +46,20 @@ builder.Services.AddSwaggerGen(setupAction =>
             }, new List<string>() 
         }
     });
+
+    //-- Agreba mas informacion al swagger --
+    setupAction.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API de Gestión de Proyectos",
+        Version = "v1",
+        Description = "Esta API permite gestionar usuarios, herramientas y proyectos. Requiere autenticación por JWT.",
+        Contact = new OpenApiContact
+        {
+            Name = "Nicolas Romero Barrios",
+            Email = "nicolasromero.barrios@gmail.com",
+            Url = new Uri("https://github.com/N-Rem"),
+        }
+    });
 });
 
 
@@ -120,11 +134,16 @@ builder.Services.AddScoped<IEmailServices, EmailServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//}
+app.UseStaticFiles(); // <- Esto habilita los archivos desde wwwroot
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Gestión v1");
+        c.InjectStylesheet("/swagger-ui/custom.css"); // agregás tu CSS //!!!!!!!!!!!!!!!!!!
+    });
 
 app.UseHttpsRedirection();
 
