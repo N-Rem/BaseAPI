@@ -1,0 +1,19 @@
+﻿
+body {
+    background-color: #F7ebd3;
+}
+
+.swagger-ui .topbar {
+    background-color: #823919;
+}
+.swagger-ui .scheme-container {
+    background: #823919;
+}
+.swagger-ui .auth-wrapper .authorize{
+    background: #241916
+}
+
+.swagger-ui .topbar .topbar-wrapper span {
+    color: #241916;
+    font-weight: bold;
+}
