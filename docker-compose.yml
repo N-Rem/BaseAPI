@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_base
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  api:
+    build:
+      context: .
+      dockerfile: BaseAPI/Dockerfile
+    container_name: api_container
+    ports:
+      - "8080:80"
+    environment:    
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DBConnectionString: "Server=mysql;Port=3306;Database=app_base;User=user;Password=userpass"
+      AuthenticationService__SecretForKey: "thisisthesecretforgeneratingakey(mustbeatleast32bitlong)DeberiaNoVerseDesdeGit-Hub"
+      AuthenticationService__Issuer: "https://tool-project-managerapibase.onrender.com"
+      AuthenticationService__Audience: "API-BASE"
+      MailSettings__Host: smtp.gmail.com
+      MailSettings__Port: "587"
+      MailSettings__UserName: apibasecodelens@gmail.com
+      MailSettings__Password: wfda ejgv spfe uvzi
+    depends_on:
+      - mysql
+    command: >
+      sh -c "dotnet ef database update --project Infrastructure --startup-project BaseAPI && dotnet BaseAPI.dll"
+
+volumes:
+  mysql-data:

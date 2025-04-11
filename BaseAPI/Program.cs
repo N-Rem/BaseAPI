@@ -98,7 +98,7 @@ builder.Services.AddAuthorization(options =>
 
 #endregion
 
-#region MySql
+#region MySql se cambia a posgreMsQL para poder deployar
 //string connectionString = builder.Configuration.GetConnectionString("DBConnectionString")!;
 string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
     ?? builder.Configuration.GetConnectionString("DBConnectionString")!;
@@ -109,7 +109,7 @@ if (string.IsNullOrEmpty(connectionString))
 
 builder.Services.AddDbContext<AppDbContext>(opcion =>
 {
-    opcion.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+    opcion.UseNpgsql(connectionString,
         b => b.MigrationsAssembly("Infrastructure"));
     opcion.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.AmbientTransactionWarning));
 });
