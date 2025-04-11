@@ -60,7 +60,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Title = "API de Gestión de Proyectos",
         Version = "v1",
-        Description = "Esta API permite gestionar usuarios, herramientas y proyectos. Requiere autenticación por JWT.",
+        Description = "Esta API permite gestionar Tres tipos de usuarios (administrador, cliente y empleado), herramientas y proyectos. Algunos endpoints requiere autenticación por JWT.",
         Contact = new OpenApiContact
         {
             Name = "Nicolas Romero Barrios",
@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-
+var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET");
 //configuración del sistema de autenticación JWT. Le digo que voy a usar tokens JWT, y como se deben validar
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
@@ -82,7 +82,7 @@ builder.Services.AddAuthentication("Bearer")
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["AuthenticationService:Issuer"],
             ValidAudience = builder.Configuration["AuthenticationService:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["AuthenticationService:SecretForKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey);
         };
     });
 
