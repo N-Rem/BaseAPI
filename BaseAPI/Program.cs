@@ -171,7 +171,18 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // Ejecuta las migraciones pendientes
+    try
+    {
+        db.Database.Migrate(); // Ejecuta las migraciones pendientes
+    }
+    catch (Exception ex)
+    {
+        // Registra el error y detiene la aplicación
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error al aplicar las migraciones.");
+        throw;
+    }
 }
+
 
 app.Run();
