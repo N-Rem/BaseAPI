@@ -13,6 +13,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//para que escuche en el puerto que le indique Railway
+//busca la variable de entorno PORT de Railway y lo guarda en una bariable.
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
+//sirve para exponer un endpoint que informe si la aplicación está "viva"
+builder.Services.AddHealthChecks();
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -91,7 +99,13 @@ builder.Services.AddAuthorization(options =>
 #endregion
 
 #region MySql
-string connectionString = builder.Configuration.GetConnectionString("DBConnectionString")!;
+//string connectionString = builder.Configuration.GetConnectionString("DBConnectionString")!;
+string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DBConnectionString")!;
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("No se encontró la cadena de conexión a la base de datos. Asegúrate de que la variable de entorno 'DB_CONNECTION_STRING' esté configurada correctamente.");
+}
 
 builder.Services.AddDbContext<AppDbContext>(opcion =>
 {
@@ -139,6 +153,7 @@ var app = builder.Build();
 //}
 app.UseStaticFiles(); // <- Esto habilita los archivos desde wwwroot
 app.UseSwagger();
+app.UseHealthChecks("/health");
 app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Gestión v1");
@@ -152,5 +167,6 @@ app.UseAuthentication(); //fundamental para usar el JWT
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

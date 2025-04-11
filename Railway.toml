@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./BaseAPI/Dockerfile"
+
+[deploy]
+startCommand = "./BaseAPI"
+restartPolicyType = "always"
+healthcheckPath = "/health"
