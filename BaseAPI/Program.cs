@@ -70,7 +70,13 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET")
+    ?? builder.Configuration["AuthenticationService:SecretForKey"];
+
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new InvalidOperationException("JWT_SECRET is not defined either as an environment variable or in appsettings.json");
+}
 //configuración del sistema de autenticación JWT. Le digo que voy a usar tokens JWT, y como se deben validar
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
