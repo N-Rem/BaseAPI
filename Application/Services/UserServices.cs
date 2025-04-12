@@ -60,7 +60,7 @@ namespace Application.Services
         {
             try
             {
-                //await EnsureEmailNotExistsAsync(request.Email);
+                await EnsureEmailNotExistsAsync(request.Email);
                 if (!NameValidator(request.Name)) throw new NotValidFormatExeption("Invalid name format.");
                 if (!EmailValidator(request.Email)) throw new NotValidFormatExeption("Invalid email format.");
                 if (!UserTypeValidator(request.Type.ToString())) throw new NotValidFormatExeption("Invalid user type.");
