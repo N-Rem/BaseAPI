@@ -14,6 +14,14 @@ namespace Infrastructure.Services.AuthenticationServices
         public const string AuthenticationService = "AuthenticationService";
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public string SecretForKey { get; set; }
+
+        private string _SecretForKey;
+        public string SecretForKey
+        {
+            get => string.IsNullOrEmpty(_SecretForKey)
+                ? Environment.GetEnvironmentVariable("JWT_SECRET")
+                : _SecretForKey;
+            set => _SecretForKey = value;
+        }
     }
 }
