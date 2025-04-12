@@ -70,9 +70,8 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET")
+var secretKey = builder.Configuration["JWT_SECRET"]
     ?? builder.Configuration["AuthenticationService:SecretForKey"];
-
 if (string.IsNullOrEmpty(secretKey))
 {
     throw new InvalidOperationException("JWT_SECRET is not defined either as an environment variable or in appsettings.json");
