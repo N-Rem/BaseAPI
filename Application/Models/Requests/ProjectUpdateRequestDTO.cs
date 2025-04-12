@@ -14,7 +14,5 @@ namespace Application.Models.Requests
         public string Description { get; set; }
 
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Status Status { get; set; } = Status.Active;
     }
 }

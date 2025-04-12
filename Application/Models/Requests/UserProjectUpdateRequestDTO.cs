@@ -13,8 +13,6 @@ namespace Application.Models.Requests
             public int UserId { get; set; }
             public int ProjectId { get; set; }
 
-            [JsonConverter(typeof(JsonStringEnumConverter))]
-            public Status Status { get; set; } = Status.Active;
      
     }
 }
