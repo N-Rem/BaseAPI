@@ -76,7 +76,6 @@ namespace Application.Services
                 var project = await FoundProjectIdAsync(id);
                 project.Name = request.Name;
                 project.Description = request.Description;
-                project.Status = request.Status;
 
                 await _projectRepository.UpdateAsync(project);
             }

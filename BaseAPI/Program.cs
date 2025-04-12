@@ -60,7 +60,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Title = "API de Gestión de Proyectos",
         Version = "v1",
-        Description = "Esta API permite gestionar Tres tipos de usuarios (administrador, cliente y empleado), herramientas y proyectos. Algunos endpoints requiere autenticación por JWT.",
+        Description = "Esta API permite gestionar Tres tipos de usuarios (administrador, cliente y empleado), herramientas y proyectos. Algunos endpoints requiere autenticación por JWT. Recuperacion de contraseña por email. ",
         Contact = new OpenApiContact
         {
             Name = "Nicolas Romero Barrios",
@@ -74,7 +74,7 @@ var secretKey = builder.Configuration["JWT_SECRET"]
     ?? builder.Configuration["AuthenticationService:SecretForKey"];
 if (string.IsNullOrEmpty(secretKey))
 {
-    throw new InvalidOperationException("JWT_SECRET is not defined either as an environment variable or in appsettings.json");
+    throw new InvalidOperationException("JWT_SECRET is not defined either as an environment variable or in appsettings.json. Contiene recuperacion de contraseña por mail.");
 }
 //configuración del sistema de autenticación JWT. Le digo que voy a usar tokens JWT, y como se deben validar
 builder.Services.AddAuthentication("Bearer")

@@ -67,7 +67,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserTool")
+                    b.Property<int?>("UserTool")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -148,9 +148,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("UserTool")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserTool");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserProject", b =>

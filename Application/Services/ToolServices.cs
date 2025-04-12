@@ -56,6 +56,7 @@ namespace Application.Services
                 var newTool = new Tool();
                 newTool.Name = request.Name;
                 newTool.Description = request.Description;
+                newTool.UserTool = null;
                 newTool.Status = Domain.Enums.Status.Active;
 
                 var tool = await _toolRepository.AddAsync(newTool);
@@ -79,8 +80,7 @@ namespace Application.Services
                 tool.Name = request.Name;
                 tool.Description = request.Description;
                 tool.UserTool = request.UserTool;
-                tool.Status = request.Status;
-
+                
                 await _toolRepository.UpdateAsync(tool);
             }
             catch (NotFoundException ex)

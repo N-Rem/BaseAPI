@@ -14,7 +14,8 @@ namespace Application.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int UserTool { get; set; }
+        public int? UserTool { get; set; }
+
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status Status { get; set; } = Status.Active;
@@ -26,6 +27,7 @@ namespace Application.Models
             dto.Id = t.Id;
             dto.Name = t.Name;
             dto.Description = t.Description;
+            dto.UserTool = t.UserTool;
             dto.Status = t.Status;
 
             return dto;

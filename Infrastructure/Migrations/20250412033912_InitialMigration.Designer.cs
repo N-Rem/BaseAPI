@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250411204918_InitialMigration")]
+    [Migration("20250412033912_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -70,7 +70,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserTool")
+                    b.Property<int?>("UserTool")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -151,9 +151,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("UserTool")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserTool");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserProject", b =>

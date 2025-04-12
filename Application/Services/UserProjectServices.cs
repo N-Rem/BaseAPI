@@ -78,7 +78,6 @@ namespace Application.Services
                 var userProject = await FoundUserProjectIdAsync(id);
                 userProject.ProjectId = request.ProjectId;
                 userProject.UserId = request.UserId;
-                userProject.Status = request.Status;
 
                 await _userProjectRepository.UpdateAsync(userProject);
             }
