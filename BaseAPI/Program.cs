@@ -14,7 +14,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
-    .AddJsonFile("appsetting.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsetting.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 //para que escuche en el puerto que le indique Railway
 //busca la variable de entorno PORT de Railway y lo guarda en una bariable.
