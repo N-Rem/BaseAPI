@@ -13,13 +13,11 @@ namespace Infrastructure.Services.EmailServises
         public int Port { get; set; }
         public string UserName { get; set; }
 
-        private string _password;
         public string Password
         {
-            get => string.IsNullOrEmpty(_password)
-                ? Environment.GetEnvironmentVariable("MAIL_PASSWORD")
-                : _password;
+            get => Environment.GetEnvironmentVariable("MAIL_PASSWORD") ?? _password;
             set => _password = value;
         }
+        private string _password;
     }
 }
