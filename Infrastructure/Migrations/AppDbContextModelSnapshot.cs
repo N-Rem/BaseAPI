@@ -67,13 +67,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-<<<<<<< Updated upstream
-                    b.Property<int>("UserTool")
-                        .HasColumnType("integer");
-=======
                     b.Property<int?>("UserTool")
-                        .HasColumnType("int");
->>>>>>> Stashed changes
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

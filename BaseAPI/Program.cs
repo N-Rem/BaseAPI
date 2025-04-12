@@ -60,7 +60,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Title = "API de Gestión de Proyectos",
         Version = "v1",
-        Description = "Esta API permite gestionar Tres tipos de usuarios (administrador, cliente y empleado), herramientas y proyectos. Algunos endpoints requiere autenticación por JWT.",
+        Description = "Esta API permite gestionar Tres tipos de usuarios (administrador, cliente y empleado), herramientas y proyectos. Algunos endpoints requiere autenticación por JWT. Recuperacion de contraseña por email. ",
         Contact = new OpenApiContact
         {
             Name = "Nicolas Romero Barrios",
