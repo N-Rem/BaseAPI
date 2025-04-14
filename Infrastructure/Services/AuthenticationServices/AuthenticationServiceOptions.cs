@@ -15,13 +15,14 @@ namespace Infrastructure.Services.AuthenticationServices
         public string Issuer { get; set; }
         public string Audience { get; set; }
 
-        private string _SecretForKey;
-        public string SecretForKey
-        {
-            get => string.IsNullOrEmpty(_SecretForKey)
-                ? Environment.GetEnvironmentVariable("JWT_SECRET")
-                : _SecretForKey;
-            set => _SecretForKey = value;
-        }
+        public string Password { get; set; }
+        //private string _SecretForKey;
+        //public string SecretForKey
+        //{
+        //    get => string.IsNullOrEmpty(_SecretForKey)
+        //        ? Environment.GetEnvironmentVariable("JWT_SECRET")
+        //        : _SecretForKey;
+        //    set => _SecretForKey = value;
+        //}
     }
 }

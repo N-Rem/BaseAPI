@@ -13,7 +13,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Primero carga appsettings.json, y después sobreescribe todo lo que venga en variables de entorno.
+
 builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 //para que escuche en el puerto que le indique Railway
@@ -73,8 +76,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-var secretKey = builder.Configuration["JWT_SECRET"]
-    ?? builder.Configuration["AuthenticationService:SecretForKey"];
+var secretKey = builder.Configuration["AuthenticationService:SecretForKey"];
 if (string.IsNullOrEmpty(secretKey))
 {
     throw new InvalidOperationException("JWT_SECRET is not defined either as an environment variable or in appsettings.json. Contiene recuperacion de contraseña por mail.");
