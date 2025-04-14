@@ -9,9 +9,9 @@ namespace Infrastructure.Services.EmailServises
     public class EmailSettingsOptions
     {
         public const string EmailService = "MailSettings";
-        public string Host { get; set; }
-        public int Port { get; set; }
-        public string UserName { get; set; }
+        public string Host { get; set; } = string.Empty;
+        public string Port { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
 }
