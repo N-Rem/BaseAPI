@@ -170,7 +170,7 @@ app.UseSwaggerUI(c =>
         c.InjectStylesheet("/swagger-ui/custom.css"); // agregás tu CSS //!!!!!!!!!!!!!!!!!!
     });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication(); //fundamental para usar el JWT
 
