@@ -10,15 +10,8 @@ namespace Infrastructure.Services.EmailServises
     {
         public const string EmailService = "MailSettings";
         public string Host { get; set; }
-        public int Port { get; set; } 
+        public int Port { get; set; }
         public string UserName { get; set; }
-
-        //public string Password { get; set; } = string.Empty;
-        public string Password
-        {
-            get => Environment.GetEnvironmentVariable("MAIL_PASSWORD") ?? _password;
-            set => _password = value;
-        }
-        private string _password;
+        public string Password { get; set; }
     }
 }
